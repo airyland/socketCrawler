@@ -26,12 +26,13 @@ page.open('https://www.umeng.com/sso/login?service=http://www.umeng.com/apps', f
 
 page.onUrlChanged = function(url) {
     console.log('current url is' + url);
-    // 注入socket.io
-    var inject = page.injectJs('./lib/socket.io.min.js');
-    page.injectJs('./lib/zepto.min.js');
     // 登录成功后发送ajax请求
     if (/ticket/.test(url)) {
-        page.evaluate(function(dataMap) {
+        // 注入socket.io
+        page.injectJs('./lib/socket.io.min.js');
+        page.injectJs('./lib/zepto.min.js');
+
+        page.evaluate(function() {
 
             var socket = io.connect('http://127.0.0.1:8888/umeng');
 
