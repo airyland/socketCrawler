@@ -1,6 +1,6 @@
 var page = require('webpage').create();
 var fs = require("fs");
-
+var config = require('./config.json');
 page.onConsoleMessage = function(msg) {
     console.log(msg);
 };
@@ -9,16 +9,13 @@ page.open('https://www.umeng.com/sso/login?service=http://www.umeng.com/apps', f
     if (status === 'success') {
         console.log('page open successfully');
         var data;
-        page.evaluate(function() {
+        page.evaluate(function(config) {
             setTimeout(function() {
-                document.querySelector('#userId').value = 'lizheng@bozhong.com';
-                document.querySelector('#passWord').value = '2472252';
+                document.querySelector('#userId').value = config.username;
+                document.querySelector('#passWord').value = config.password;
                 document.querySelector('#login-submit').click();
             }, 2000);
-            document.querySelector('#userId').value = 'lizheng@bozhong.com';
-            document.querySelector('#passWord').value = '2472252';
-            document.querySelector('#login-submit').click();
-        });
+        }, config);
     } else {
         console.log('page open failed');
     }
